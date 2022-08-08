@@ -1,7 +1,8 @@
 <template>
-    <div class="overflow-hidden overflow-x-auto p-6 bg-white border-gray-200">
-        <div class="min-w-full align-middle">
-            <table class="min-w-full divide-y divide-gray-200 border">
+        <Head title="Post list" />
+        <AppLayout>
+            <Link :href="route('posts.create')" class="inline-block px-4 py-3 bg-blue-500 text-white rounded mb-4">Add new post</Link>
+            <table class="mt-4 min-w-full divide-y divide-gray-200 border">
                 <thead>
                 <tr>
                     <th class="px-6 py-3 bg-gray-50 text-left">
@@ -32,17 +33,37 @@
                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                         {{ post.created_at }}
                     </td>
+                    <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                        <Link :href="route('posts.edit', post.id)" class="px-2 py-1 bg-blue-600 text-white rounded font-bold uppercase mr-2">Edit</Link>
+                        <button @click="destroy(post.id)" type="button" class="px-2 py-1 bg-red-600 text-white rounded font-bold uppercase">
+                            Delete
+                        </button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
-        </div>
-    </div>
+        </AppLayout>
 </template>
 
 <script>
+import { Head, Link } from "@inertiajs/inertia-vue3"
+import AppLayout from "../../Layouts/App"
+import {Inertia} from "@inertiajs/inertia";
+
 export default {
+    components: {
+        AppLayout, Head, Link
+    },
     props: {
         posts: Object
+    },
+    setup() {
+        const destroy = (id) => {
+            if (confirm('Are you sure?')) {
+                Inertia.delete(route('posts.destroy', id))
+            }
+        }
+        return { destroy }
     }
 }
 </script>

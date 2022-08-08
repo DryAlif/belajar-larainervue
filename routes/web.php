@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'dashboard')->name('dashboard');
 
-Route::get('posts', [\App\Http\Controllers\PostController::class, 'index']);
+Route::redirect('/', 'login');
+Route::resource('posts', \App\Http\Controllers\PostController::class);
+Route::inertia('pages/about', 'About')->name('pages.about');
+Route::inertia('login', 'Auth/Login')->name('login');
